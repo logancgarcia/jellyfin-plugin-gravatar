@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Gravatar</title>
+</head>
+<body>
+    <div data-role="page" class="page type-interior pluginConfigurationPage gravatarConfigPage" data-require="emby-input,emby-button,emby-select,emby-checkbox">
+        <div data-role="content">
+            <div class="content-primary">
+                <form class="gravatarConfigForm">
+                    <div class="selectContainer">
+                        <select is="emby-select" id="selectUser" label="Configure Gravatar for:"></select>
+                    </div>
+                    <div class="inputContainer">
+                        <input is="emby-input" type="text" id="txtEmail" name="txtEmail" label="Email:"></input>
+                        <div class="fieldDescription">
+                            Email address that is associated with the Gravatar.
+                        </div>
+                    </div>
+                    <label class="checkboxContainer">
+                        <input is="emby-checkbox" type="checkbox" id="chkEnable"/>
+                        <span>Enable Gravatar profile images for this user</span>
+                    </label>
+                    <div class="selectContainer">
+                        <select is="emby-select" id="selectRating" label="Configure Gravatar image rating:">
+                            <option value="g">G</option>
+                            <option value="pg">PG</option>
+                            <option value="r">R</option>
+                            <option value="x">X</option>
+                        </select>
+                    </div>
+                    <div class="selectContainer">
+                        <select is="emby-select" id="selectDefaultAvatar" label="Configure fallback avatar:">
+                            <option value="identicon">Identicon</option>
+                            <option value="monsterid">Monster ID</option>
+                            <option value="retro">Retro</option>
+                            <option value="robohash">Robohash</option>
+                            <option value="wavatar">Wavatar</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button is="emby-button" type="submit" class="raised button-submit block">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript">
+            (function () {
+                var pluginId = "efa9b61c-e337-4b94-814b-2d8e495dd17f";
+
+                function loadUserConfig(page, userId) {
+                    Dashboard.showLoadingMsg();
+                    ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                        var gravatarConfig = config.Options.filter(function (c) {
+                            return userId == c.UserId;
+                        })[0] || { Enabled: false };
+                        $('#chkEnable', page).checked(gravatarConfig.Enabled).checkboxradio("refresh");
+                        $('#txtEmail', page).val(gravatarConfig.Email || '');
+                        $('#selectRating', page).val(gravatarConfig.Rating || 'g');
+                        $('#selectDefaultAvatar', page).val(gravatarConfig.DefaultAvatar || 'identicon');
+                        Dashboard.hideLoadingMsg();
+                    });
+                }
+
+                $('.gravatarConfigPage').on('pageinit', function (event) {
+                    var page = this;
+
+                    $('#selectUser', page).on('change', function () {
+                        loadUserConfig(page, this.value);
+                    });
+
+                    $('.gravatarConfigForm', page).on('submit', function (e) {
+                        Dashboard.showLoadingMsg();
+                        var form = this;
+
+                        ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                            var userId = $('#selectUser', form).val();
+
+                            var gravatarConfig = config.Options.filter(function (c) {
+                                return userId == c.UserId;
+                            })[0];
+
+                            if (!gravatarConfig) {
+                                gravatarConfig = {};
+                                config.Options.push(gravatarConfig);
+                            }
+
+                            gravatarConfig.UserId = userId;
+                            gravatarConfig.Enabled = $('#chkEnable', form).checked();
+                            gravatarConfig.Email = $('#txtEmail', form).val();
+                            gravatarConfig.DefaultAvatar = $('#selectDefaultAvatar', form).val();
+                            gravatarConfig.Rating = $('#selectRating', form).val();
+
+                            ApiClient.updatePluginConfiguration(pluginId, config).then(Dashboard.processPluginConfigurationUpdateResult);
+                        });
+
+                        return false;
+                    });
+                }).on('pageshow', function (event) {
+                    Dashboard.showLoadingMsg();
+                    var page = this;
+
+                    ApiClient.getUsers().then(function (users) {
+                        $('#selectUser', page).html(users.map(function (user) {
+                            return '<option value="' + user.Id + '">' + user.Name + '</option>';
+                        })).selectmenu('refresh').trigger('change');
+                    });
+
+                    Dashboard.hideLoadingMsg();
+                });
+            })();
+        </script>
+    </div>
+</body>
+</html>

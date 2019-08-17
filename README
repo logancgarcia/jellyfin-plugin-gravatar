@@ -1,0 +1,31 @@
+                   Jellyfin Gravatar Plugin
+
+  About
+  -----
+
+  This is a Gravatar plugin for the Jellyfin media server and
+  is primarily written in C# and JavaScript.
+
+  Bug Reporting
+  -------------
+
+  Any and all bugs can be filed at the issue tracker located at
+  <https://gitlab.com/Feral2k/jellyfin-plugin-gravatar/issues>.
+  Please include your operating system, the browser (if
+  applicable), your version of .NET Core and Jellyfin, and
+  instructions on how to reproduce the bug.
+
+  Contributors
+  ------------
+
+  Please see the file called AUTHORS.
+
+  Installation
+  ------------
+
+  Please see the file called INSTALL.
+
+  Licensing
+  ---------
+
+  Please see the file called COPYING.
