@@ -1,0 +1,14 @@
+build:
+  image: mcr.microsoft.com/dotnet/core/sdk:2.2
+  stage: build
+  artifacts:
+    paths:
+      - Jellyfin.Plugin.Gravatar/bin/Release/netstandard2.0/Jellyfin.Plugin.Gravatar.dll
+  cache:
+    paths:
+      - Jellyfin.Plugin.Gravatar/.nuget
+  before_script:
+    - cd Jellyfin.Plugin.Gravatar
+    - dotnet restore --packages .nuget -v q
+  script:
+    - dotnet build --no-restore -c Release -v q
