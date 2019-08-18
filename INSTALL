@@ -27,14 +27,9 @@
   $ git clone https://gitlab.com/Feral2k/jellyfin-plugin-gravatar
   $ cd jellyfin-plugin-gravatar/Jellyfin.Plugin.Gravatar
 
-  First, the NuGet packages for the project need to
-  be retrieved.
-
-  $ dotnet restore
-
   The project can then be built.
 
-  $ dotnet build --no-restore -c Release
+  $ dotnet build -c Release
 
   Install
   -------
