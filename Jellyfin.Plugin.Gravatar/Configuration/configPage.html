@@ -3,6 +3,32 @@
 <head>
     <meta charset="utf-8"/>
     <title>Gravatar</title>
+    <script>
+    /*
+    @licstart  The following is the entire license notice for the
+    JavaScript code in this page.
+
+    Copyright (C) 2019  Logan Garcia
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+    @licend  The above is the entire license notice
+    for the JavaScript code in this page.
+    */
+    </script>
 </head>
 <body>
     <div data-role="page" class="page type-interior pluginConfigurationPage gravatarConfigPage" data-require="emby-input,emby-button,emby-select,emby-checkbox">
@@ -75,6 +101,11 @@
                     $('.gravatarConfigForm', page).on('submit', function (e) {
                         Dashboard.showLoadingMsg();
                         var form = this;
+                        var onError = function () {
+                            require(['alert'], function (alert) {
+                                alert("There was an error retrieving the gravatar. Please check your settings and try again.");
+                            });
+                        };
 
                         ApiClient.getPluginConfiguration(pluginId).then(function (config) {
                             var userId = $('#selectUser', form).val();
@@ -95,7 +126,14 @@
                             gravatarConfig.Rating = $('#selectRating', form).val();
 
                             ApiClient.updatePluginConfiguration(pluginId, config).then(Dashboard.processPluginConfigurationUpdateResult);
-                        });
+
+                            if (gravatarConfig.Enabled) {
+                                ApiClient.ajax({
+                                    type: "POST",
+                                    url: ApiClient.getUrl("Gravatar/" + gravatarConfig.UserId)
+                                }).catch(onError);
+                            }
+                        }, onError);
 
                         return false;
                     });
