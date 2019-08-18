@@ -127,12 +127,10 @@
 
                             ApiClient.updatePluginConfiguration(pluginId, config).then(Dashboard.processPluginConfigurationUpdateResult);
 
-                            if (gravatarConfig.Enabled) {
-                                ApiClient.ajax({
-                                    type: "POST",
-                                    url: ApiClient.getUrl("Gravatar/" + gravatarConfig.UserId)
-                                }).catch(onError);
-                            }
+                            ApiClient.ajax({
+                                type: "POST",
+                                url: ApiClient.getUrl("Gravatar/" + gravatarConfig.UserId)
+                            }).catch(onError);
                         }, onError);
 
                         return false;
