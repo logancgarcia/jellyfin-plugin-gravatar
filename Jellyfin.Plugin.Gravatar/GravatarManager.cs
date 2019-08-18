@@ -16,7 +16,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 using System;
-using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -79,14 +78,16 @@ namespace Jellyfin.Plugin.Gravatar
             User user,
             CancellationToken cancellationToken)
         {
+            // do not execute if plugin is not enabled for user
             if (!IsEnabledForUser(user))
             {
                 _logger.LogError(
-                    "Gravatar support is not enabled for this user",
+                    "Gravatar support is not enabled for {user}",
                     user.Name);
                 return;
             }
 
+            // set variables
             var imageType = (ImageType)Enum.Parse(
                 typeof(ImageType),
                 "Primary",
@@ -94,21 +95,23 @@ namespace Jellyfin.Plugin.Gravatar
             var options = GetOptions(user);
             var hash = options.Email;
 
+            // use username for hash if email is not set
             if (string.IsNullOrEmpty(hash))
             {
                 hash = user.Name;
             }
 
-            hash = hash.Trim();
-            hash = hash.ToLower();
-            hash = GetMd5Hash(hash);
+            // get md5 hash for user
+            hash = GetMd5Hash(hash.Trim().ToLower());
 
+            // set url based on plugin settings
             var url = string.Format(
                 GravatarUrl,
                 hash,
                 options.DefaultAvatar,
                 options.Rating);
 
+            // save primary image for user from gravatar url
             await _providerManager.SaveImage(
                 user,
                 url,
@@ -116,6 +119,7 @@ namespace Jellyfin.Plugin.Gravatar
                 null,
                 cancellationToken).ConfigureAwait(false);
 
+            // commit the update for the user
             user.UpdateToRepository(
                 ItemUpdateType.ImageUpdate,
                 cancellationToken);
