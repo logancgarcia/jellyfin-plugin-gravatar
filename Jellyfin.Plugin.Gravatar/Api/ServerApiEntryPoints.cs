@@ -18,6 +18,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Controller.Library;
+using MediaBrowser.Controller.Net;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Services;
 using Microsoft.Extensions.Logging;
@@ -28,6 +29,7 @@ namespace Jellyfin.Plugin.Gravatar.Api
     /// Class PostGravatarImage
     /// </summary>
     [Route("/Gravatar/{UserId}", "POST")]
+    [Authenticated]
     public class PostGravatar : IReturnVoid
     {
         /// <summary>
