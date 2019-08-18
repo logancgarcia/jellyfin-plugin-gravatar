@@ -1,0 +1,46 @@
+  Prerequisites
+  -------------
+
+  o .NET Core SDK
+  o Jellyfin
+
+  Setup
+  -----
+
+  In order to build this project, the .NET Core
+  SDK needs to be installed. To install .NET Core,
+  please visit:
+
+  <https://dotnet.microsoft.com/download>
+
+  To install the plugin, the Jellyfin media server
+  will also need to be present. For installation
+  instructions, please visit:
+
+  <https://jellyfin.readthedocs.io/en/latest/administrator-docs/installing/>
+
+  Build
+  -----
+
+  First, clone or download the repository.
+
+  $ git clone https://gitlab.com/Feral2k/jellyfin-plugin-gravatar
+  $ cd jellyfin-plugin-gravatar/Jellyfin.Plugin.Gravatar
+
+  First, the NuGet packages for the project need to
+  be retrieved.
+
+  $ dotnet restore
+
+  The project can then be built.
+
+  $ dotnet build --no-restore -c Release
+
+  Install
+  -------
+
+  Once the generated DLL file is produced, it will need
+  to be copied to the plugin directory of the Jellyfin
+  server. Further instructions can be found at:
+
+  <https://jellyfin.readthedocs.io/en/latest/server/plugins/#manual>
