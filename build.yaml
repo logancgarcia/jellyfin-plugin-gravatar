@@ -1,0 +1,13 @@
+---
+name: "jellyfin-plugin-gravatar"
+guid: "efa9b61c-e337-4b94-814b-2d8e495dd17f"
+version: "1.0.0"
+nicename: "Gravatar"
+description: "Use Gravatars for profile images"
+category: "General"
+owner: "jellyfin"
+artifacts:
+  - "Jellyfin.Plugin.Gravatar.dll"
+build_type: "dotnet"
+dotnet_configuration: "Release"
+dotnet_framework: "netstandard2.0"
