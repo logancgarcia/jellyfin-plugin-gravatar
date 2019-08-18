@@ -1,15 +1,15 @@
   Prerequisites
   -------------
 
-  o .NET Core SDK
+  o .NET Core SDK 2.2
   o Jellyfin
 
   Setup
   -----
 
   In order to build this project, the .NET Core
-  SDK needs to be installed. To install .NET Core,
-  please visit:
+  SDK version 2.2 needs to be installed. To install
+  .NET Core, please visit:
 
   <https://dotnet.microsoft.com/download>
 
