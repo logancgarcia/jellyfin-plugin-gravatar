@@ -35,7 +35,7 @@
   -------
 
   Once the generated DLL file is produced, it will need
-  to be copied to the plugin directory of the Jellyfin
+  to be copied to the plugins directory of the Jellyfin
   server. Further instructions can be found at:
 
-  <https://jellyfin.readthedocs.io/en/latest/server/plugins/#manual>
+  <https://jellyfin.org/docs/general/server/plugins/index.html#manual>

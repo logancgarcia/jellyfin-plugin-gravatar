@@ -15,6 +15,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Controller.Library;
@@ -37,7 +38,7 @@ namespace Jellyfin.Plugin.Gravatar.Api
         /// </summary>
         /// <value>The user id.</value>
         [ApiMember(Name = "UserId", Description = "User ID", IsRequired = true, DataType = "string", ParameterType = "path", Verb = "POST")]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
     }
 
     public class ServerApiEndpoints : IService
